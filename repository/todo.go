@@ -22,4 +22,42 @@ func NewTodoRepository(db *gorm.DB) TodoRepository {
 	return &todoRepository{db: db}
 }
 
+func(ur *userRepository) Create(todo *domain.User) error {
+	if err := ur.db.Create(&user).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func(ur *userRepository) FindById(idUser uint) (*domain.User, error) {
+	var user domain.User
+	if err := ur.db.First(&user, idUser).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+func(ur *userRepository) FindAllByIdUser(idUser uint) (*[]domain.User, error) {
+	var users []domain.User
+	if err := ur.db.Find(&users, idUser).Error; err != nil {
+		return nil, err
+	}
+	return &users, nil
+}
+
+func(ur *userRepository) Delete(id uint) error {
+	var user domain.User
+	if err := ur.db.Delete(&user, id).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (ur *userRepository) Update(user *domain.User) error {
+	var updateUser domain.User
+	if err := ur.db.Model(&updateUser).Updates(user).Error; err != nil {
+		return err
+	}
+	return nil
+}
 // Todo: Implement Interface Todo
