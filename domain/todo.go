@@ -6,5 +6,5 @@ type Todo struct {
 	gorm.Model
 	Activity string `json:"activity" `
 	IdUser   uint   `json:"id_user"`
-	User     User   `gorm:"foreignkey:IdUser;association_foreignkey:ID"`
+	User     User   `json:"user" gorm:"foreignkey:IdUser;association_foreignkey:ID"`
 }
