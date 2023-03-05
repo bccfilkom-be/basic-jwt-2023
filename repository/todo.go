@@ -22,14 +22,14 @@ func NewTodoRepository(db *gorm.DB) TodoRepository {
 	return &todoRepository{db: db}
 }
 
-func(tr *todoRepository) Create(todo *domain.Todo) error {
-	if err := tr.db.Create(&todo).Error; err != nil {
+func (tr *todoRepository) Create(todo *domain.Todo) error {
+	if err := tr.db.Preload("User").Create(&todo).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func(tr *todoRepository) FindById(idTodo uint) (*domain.Todo, error) {
+func (tr *todoRepository) FindById(idTodo uint) (*domain.Todo, error) {
 	var todo *domain.Todo
 	if err := tr.db.First(&todo, idTodo).Error; err != nil {
 		return nil, err
@@ -37,7 +37,7 @@ func(tr *todoRepository) FindById(idTodo uint) (*domain.Todo, error) {
 	return todo, nil
 }
 
-func(tr *todoRepository) FindAllByIdTodo(idTodo uint) ([]*domain.Todo, error) {
+func (tr *todoRepository) FindAllByIdTodo(idTodo uint) ([]*domain.Todo, error) {
 	var todos []*domain.Todo
 	if err := tr.db.Find(&todos, idTodo).Error; err != nil {
 		return nil, err
@@ -45,7 +45,7 @@ func(tr *todoRepository) FindAllByIdTodo(idTodo uint) ([]*domain.Todo, error) {
 	return todos, nil
 }
 
-func(tr *todoRepository) Delete(id uint) error {
+func (tr *todoRepository) Delete(id uint) error {
 	var todo domain.Todo
 	if err := tr.db.Delete(&todo, id).Error; err != nil {
 		return err
@@ -60,4 +60,5 @@ func (tr *todoRepository) Update(todo *domain.Todo) error {
 	}
 	return nil
 }
+
 // Todo: Implement Interface Todo
