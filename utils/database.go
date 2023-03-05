@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/bccfilkom-be/basic-jwt-2023/domain"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -32,7 +33,7 @@ func MakeConnection(data DriverDatabase) (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	if err := db.AutoMigrate(new(domain.User), new(domain.Expert), new(domain.Review), new(domain.Transaction)); err != nil {
+	if err := db.AutoMigrate(&domain.User{}, &domain.Todo{}); err != nil {
 		return nil, err
 	}
 	return db, nil
